@@ -33,9 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String _infoText = "Informe seus dados!";
 
   void _resetFields() {
-    weightEC.text = "";
-    heightEC.text = "";
-    _infoText = "Informe seus dados!";
+    setState(() {
+      weightEC.text = "";
+      heightEC.text = "";
+      _infoText = "Informe seus dados!";
+    });10
   }
 
   void calculate() {
