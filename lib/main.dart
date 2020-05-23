@@ -30,6 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   TextEditingController weightEC = TextEditingController();
   TextEditingController heightEC = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
   String _infoText = "Informe seus dados!";
 
   void _resetFields() {
@@ -37,10 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
       weightEC.text = "";
       heightEC.text = "";
       _infoText = "Informe seus dados!";
-    });10
+    });
   }
 
-  void calculate() {
+  void _calculate() {
     setState(() {
       double weight = double.parse(weightEC.text);
       double height = double.parse(heightEC.text) / 100;
@@ -86,65 +89,84 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView( //permite que a tela role sob o teclado
         padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.00, 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Icon(Icons.person_outline,
-                size: 120.0,
-                color: Colors.green
-            ),
-            TextField( //PESO
-              controller: weightEC,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Peso (kg)",
-                labelStyle: TextStyle(color: Colors.green),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Icon(Icons.person_outline,
+                  size: 120.0,
+                  color: Colors.green
               ),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 25.0,
-              ),
-            ),
-            TextField( //ALTURA
-              controller: heightEC,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Altura (cm)",
-                labelStyle: TextStyle(color: Colors.green),
-              ),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 25.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 10.0,
-              ),
-              child: Container(
-                height: 50.0,
-                child: RaisedButton(
-                  onPressed: calculate,
-                  child: Text("Calcular",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0),
-                  ),
+              TextFormField( //PESO
+                controller: weightEC,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Insira seu Peso!";
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Peso (kg)",
+                  labelStyle: TextStyle(color: Colors.green),
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
                   color: Colors.green,
+                  fontSize: 25.0,
                 ),
               ),
-            ),
-            Text("$_infoText",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 25.00,
+              TextFormField( //ALTURA
+                controller: heightEC,
+                validator: (value) {
+                  if (value.isEmpty) {
+                  return "Insira sua Altura!";
+                  }
+                    return null;
+                },
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Altura (cm)",
+                  labelStyle: TextStyle(color: Colors.green),
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 25.0,
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 10.0,
+                  bottom: 10.0,
+                ),
+                child: Container(
+                  height: 50.0,
+                  child: RaisedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _calculate();
+                      }
+                    },
+                    child: Text("Calcular",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0),
+                    ),
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+              Text("$_infoText",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 25.00,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
